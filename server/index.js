@@ -1,11 +1,11 @@
 const express = require("express");
-const mysql = require("mysql");
 const app = express();
 require("dotenv").config();
-const productRouter = require("./api/v1/routers/product.router");
+const routerApiV1 = require("./api/v1/routers/index.router");
 const pool = require("./config/database"); // Adjust the path as necessary
 
-app.use("/products", productRouter);
+//router
+routerApiV1(app);
 
 // Bắt đầu server
 const PORT = process.env.PORT || 3000;
