@@ -10,12 +10,15 @@ const CardProducts = (props) => {
       style={{ height: "400px", width: "300px", border: "1px solid" }}
     >
       <Link to={`/products/${props.id}`}>
-        <div className="card-image">
+        <div
+          className="card-image"
+          style={{ height: "250px", border: "1px solid" }}
+        >
           <img
             src={props.image}
             alt={props.title}
             className="img-product"
-            style={{ width: "100%", objectFit: "cover", height: "250px" }}
+            style={{ width: "100%", objectFit: "cover", height: "100%" }}
           />
         </div>
         <h3 className="card-title">{props.title}</h3>
