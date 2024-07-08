@@ -1,37 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CardProducts from "./CardProducts";
 
 const ListProducts = () => {
-  const products = [
-    {
-      id: 1,
-      image:
-        "https://images.unsplash.com/photo-1720206811364-684e8f8e803f?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8",
-      title: "PRODUCT 1",
-      describe: "this is product 1",
-      price: "55.35",
-    },
-    {
-      id: 2,
-      image:
-        "https://plus.unsplash.com/premium_photo-1676955432796-226f504a560b?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1fHx8ZW58MHx8fHx8",
-      title: "PRODUCT 2",
-      describe: "this is product 2",
-      price: "22.325",
-    },
-  ];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:8081/api/v1/products");
+        console.log(response);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setProducts(data.products);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="row" style={{ gap: "10px" }}>
-      {products &&
-        products.map((items, index) => (
-          <CardProducts
-            key={index}
-            image={items.image}
-            title={items.title}
-            describe={items.describe}
-            price={items.price}
-          />
-        ))}
+      {products.map((item, index) => (
+        <CardProducts
+          key={index}
+          image={item.image}
+          title={item.title}
+          description={item.description}
+          price={item.price}
+          id={item.id}
+        />
+      ))}
     </div>
   );
 };
