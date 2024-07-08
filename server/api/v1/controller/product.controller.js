@@ -1,4 +1,6 @@
 const Product = require("../model/product.model");
+// import { v4 as uuidv4 } from "uuid";
+const { v4: uid } = require("uuid");
 
 module.exports.index = async (req, res) => {
   try {
@@ -39,6 +41,44 @@ module.exports.getDetails = async (req, res) => {
       code: 500,
       message: "Internal Server Error",
       error: err.message,
+    });
+  }
+};
+
+module.exports.createProduct = async (req, res) => {
+  try {
+    const id = uid(); // Generate a unique ID
+    const { title, image, description, price } = req.body;
+    console.log("req.body", req.body); // Log the request body
+
+    if (!title || !image || !description || !price) {
+      return res.status(400).json({
+        code: 400,
+        message: "All fields are required",
+      });
+    }
+
+    const addProduct = await Product.createProduct(
+      id,
+      title,
+      image,
+      description,
+      price
+    );
+
+    res.status(200).json({
+      code: 200,
+      message: "Create product success",
+      data: {
+        product: addProduct,
+      },
+    });
+  } catch (error) {
+    console.error("Error creating product:", error);
+    res.status(500).json({
+      code: 500,
+      message: "Internal Server Error",
+      error: error.message,
     });
   }
 };

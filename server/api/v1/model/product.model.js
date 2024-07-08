@@ -28,6 +28,23 @@ const Product = {
       throw error;
     }
   },
+
+  createProduct: async (id, title, image, description, price) => {
+    const sql_create =
+      "INSERT INTO products (id, title, image, description, price) VALUES (?, ?, ?, ?, ?)";
+    try {
+      const results = await query(sql_create, [
+        id,
+        title,
+        image,
+        description,
+        price,
+      ]);
+      return results;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 module.exports = Product;
