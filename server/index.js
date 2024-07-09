@@ -1,8 +1,16 @@
 const express = require("express");
 const app = express();
+var cors = require("cors");
 require("dotenv").config();
 const routerApiV1 = require("./api/v1/routers/index.router");
 const pool = require("./config/database"); // Adjust the path as necessary
+const bodyPaser = require("body-parser");
+
+//parse application
+app.use(bodyPaser.json());
+
+//CORS
+app.use(cors());
 
 //router
 routerApiV1(app);
