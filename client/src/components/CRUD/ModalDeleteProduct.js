@@ -6,7 +6,7 @@ const ModalDeleteProduct = ({ handleClose, confirmDelete, show }) => {
   //   console.log("props >>", props);
   return (
     <Modal show={show}>
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title>Xác nhận xóa</Modal.Title>
       </Modal.Header>
       <Modal.Body>Bạn có chắc chắn muốn xóa sản phẩm này?</Modal.Body>
