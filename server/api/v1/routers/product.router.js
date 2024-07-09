@@ -5,7 +5,8 @@ const { v4: uid } = require("uuid");
 const productController = require("../controller/product.controller");
 
 router.get("/", productController.index);
+router.get("/detail/:id", productController.getDetails);
 router.post("/create", productController.createProduct);
-router.get("/:id", productController.getDetails);
+router.delete("/delete/:id", productController.deleteProduct);
 
 module.exports = router;

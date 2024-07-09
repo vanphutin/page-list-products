@@ -6,8 +6,15 @@ const query = promisify(db.query).bind(db);
 
 const Product = {
   //[GET] /api/v1/products
-  getAllProducts: async () => {
-    const sql = "SELECT * FROM products";
+  getAllProducts: async (sort) => {
+    let sql = "SELECT * FROM products";
+
+    // [GET] /api/v1/products?sort=asc || desc
+    if (sort === "asc") {
+      sql += " ORDER BY price ASC";
+    } else if (sort === "desc") {
+      sql += " ORDER BY price DESC";
+    }
     try {
       const results = await query(sql);
       return results;
@@ -30,6 +37,7 @@ const Product = {
   },
 
   createProduct: async (id, title, image, description, price) => {
+    //[POST] /api/v1/products/create
     const sql_create =
       "INSERT INTO products (id, title, image, description, price) VALUES (?, ?, ?, ?, ?)";
     try {
@@ -40,6 +48,15 @@ const Product = {
         description,
         price,
       ]);
+      return results;
+    } catch (error) {
+      throw error;
+    }
+  },
+  deleteProduct: async (id) => {
+    const sql_delete = "DELETE FROM products WHERE id=?";
+    try {
+      const results = await query(sql_delete, [id]);
       return results;
     } catch (error) {
       throw error;

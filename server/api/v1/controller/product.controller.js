@@ -3,9 +3,10 @@ const Product = require("../model/product.model");
 const { v4: uid } = require("uuid");
 
 module.exports.index = async (req, res) => {
+  const sort = req.query.sort; // Lấy tham số sort từ query string, mặc định là 'asc'
   try {
-    const products = await Product.getAllProducts();
-    console.log(products); // Log dữ liệu vào terminal
+    const products = await Product.getAllProducts(sort);
+    // console.log(products); // Log dữ liệu vào terminal
     res.json({
       code: 200,
       message: "get all products",
@@ -69,12 +70,38 @@ module.exports.createProduct = async (req, res) => {
     res.status(200).json({
       code: 200,
       message: "Create product success",
-      data: {
-        product: addProduct,
-      },
+      product: addProduct,
     });
   } catch (error) {
     console.error("Error creating product:", error);
+    res.status(500).json({
+      code: 500,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+module.exports.deleteProduct = async (req, res) => {
+  try {
+    const productDetails = await Product.deleteProduct(req.params?.id);
+
+    if (!productDetails) {
+      return res.status(404).json({
+        code: 404,
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json({
+      code: 200,
+      message: "Delete product success",
+      data: {
+        product: productDetails,
+      },
+    });
+  } catch (error) {
+    console.error("Error delete product:", error);
     res.status(500).json({
       code: 500,
       message: "Internal Server Error",
