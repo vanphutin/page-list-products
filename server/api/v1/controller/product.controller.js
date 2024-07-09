@@ -84,9 +84,9 @@ module.exports.createProduct = async (req, res) => {
 
 module.exports.deleteProduct = async (req, res) => {
   try {
-    const productDetails = await Product.deleteProduct(req.params?.id);
+    const productDelete = await Product.deleteProduct(req.params?.id);
 
-    if (!productDetails) {
+    if (!productDelete) {
       return res.status(404).json({
         code: 404,
         message: "Product not found",
@@ -97,7 +97,48 @@ module.exports.deleteProduct = async (req, res) => {
       code: 200,
       message: "Delete product success",
       data: {
-        product: productDetails,
+        product: productDelete,
+      },
+    });
+  } catch (error) {
+    console.error("Error delete product:", error);
+    res.status(500).json({
+      code: 500,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+module.exports.updateProduct = async (req, res) => {
+  try {
+    const { title, image, description, price } = req.body;
+    if (!title || !image || !description || !price) {
+      return res.status(400).json({
+        code: 400,
+        message: "All fields are required",
+      });
+    }
+    const productUpdate = await Product.updateProduct(
+      req.params?.id,
+      title,
+      image,
+      description,
+      price
+    );
+
+    if (!productUpdate) {
+      return res.status(400).json({
+        code: 404,
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json({
+      code: 200,
+      message: "Update product success",
+      data: {
+        product: productUpdate,
       },
     });
   } catch (error) {
