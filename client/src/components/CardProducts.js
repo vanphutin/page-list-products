@@ -6,7 +6,7 @@ const CardProducts = (props) => {
   // console.log("products", props);
   return (
     <div
-      className="card col-3"
+      className="card col-4"
       style={{ height: "400px", width: "300px", border: "1px solid" }}
     >
       <Link to={`/products/${props.id}`}>
