@@ -17,26 +17,31 @@ function ModalAddPoduct(props) {
       description,
       price,
     };
-
     try {
       const response = await fetch(
         "http://localhost:8081/api/v1/products/create",
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-type": "application/json",
           },
           body: JSON.stringify(product),
         }
       );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+      if (response.status !== 200) {
+        console.log("error server");
       }
-      const result = await response.json();
-      console.log("Product created successfully:", result);
+      const result = await response.json;
+      console.log("result", result);
+      setImage("");
+      setDescription("");
+      setTitle("");
+      setPrice("");
       handleClose();
+      // Sau đó tải lại trang
+      window.location.reload();
     } catch (error) {
-      console.error("Error creating product:", error);
+      console.log("error", error);
     }
   };
 
